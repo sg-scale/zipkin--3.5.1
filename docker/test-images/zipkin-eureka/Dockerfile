@@ -69,5 +69,7 @@ ENTRYPOINT ["start-eureka"]
 USER ${USER}
 
 # Use to set heap, trust store or other system properties.
-ENV JAVA_OPTS="-Xms64m -Xmx64m -XX:+ExitOnOutOfMemoryError"
+# Disable BASE64 intrinsics: https://nvd.nist.gov/vuln/detail/CVE-2026-114938
+# Remove -XX:-UseBASE64Intrinsics once the JDK is patched.
+ENV JAVA_OPTS="-Xms64m -Xmx64m -XX:+ExitOnOutOfMemoryError -XX:-UseBASE64Intrinsics"
 EXPOSE 8761

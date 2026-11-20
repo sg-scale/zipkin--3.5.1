@@ -62,7 +62,9 @@ COPY --from=install --chown=${USER} /install .
 ENV KAFKA_ADVERTISED_HOST_NAME=localhost
 # Use to set heap, trust store or other system properties.
 ENV ZOOKEEPER_JAVA_OPTS="-Xms32m -Xmx32m -XX:+ExitOnOutOfMemoryError"
-ENV JAVA_OPTS="-Xms256m -Xmx256m -XX:+ExitOnOutOfMemoryError"
+# Disable BASE64 intrinsics: https://nvd.nist.gov/vuln/detail/CVE-2026-114938
+# Remove -XX:-UseBASE64Intrinsics once the JDK is patched.
+ENV JAVA_OPTS="-Xms256m -Xmx256m -XX:+ExitOnOutOfMemoryError -XX:-UseBASE64Intrinsics"
 ENV LOGGING_LEVEL=WARN
 
 EXPOSE 2181 9092 19092

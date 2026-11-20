@@ -57,7 +57,9 @@ USER ${USER}
 COPY --from=install --chown=${USER} /install .
 
 # Set variables Cassandra's start script wants
-ENV JAVA_OPTS="-Xms256m -Xmx256m -XX:+ExitOnOutOfMemoryError -Djava.net.preferIPv4Stack=true"
+# Disable BASE64 intrinsics: https://nvd.nist.gov/vuln/detail/CVE-2026-114938
+# Remove -XX:-UseBASE64Intrinsics once the JDK is patched.
+ENV JAVA_OPTS="-Xms256m -Xmx256m -XX:+ExitOnOutOfMemoryError -Djava.net.preferIPv4Stack=true -XX:-UseBASE64Intrinsics"
 ENV LOGGING_LEVEL=WARN
 
 EXPOSE 9042
